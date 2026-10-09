@@ -1,0 +1,109 @@
+connect-linkedin-public-data-to-bigquery.md
+  f19b9ccc437d185e 1-102,104-142
+connect-google-search-console-to-bigquery.md
+  e00d32674b178275 1-98,100-138
+connect-google-analytics-to-bigquery.md
+  e00d32674b178275 1-101,103-141
+connect-google-ads-to-bigquery.md
+  e00d32674b178275 1-110,112-150
+connect-instagram-ads-to-bigquery.md
+  3fd9155a5c7347bf 1-97,99-137
+connect-youtube-analytics-to-bigquery.md
+  e00d32674b178275 1-104,106-144
+connect-xero-to-bigquery.md
+  a6524ca8fbfee9fc 1-131,133-171
+connect-shopify-to-bigquery.md
+  a6524ca8fbfee9fc 1-106,108-146
+connect-tiktok-organic-to-bigquery.md
+  f19b9ccc437d185e 1-86,88-122
+connect-instagram-insights-to-bigquery.md
+  3fd9155a5c7347bf 1-42,44-111,113-151
+connect-facebook-page-insights-to-bigquery.md
+  3fd9155a5c7347bf 1-49,51-95,98-108,110-148
+README.md
+  1c3f590f1bf0e896 2,4-90
+connect-microsoft-ads-to-bigquery.md
+  3fd9155a5c7347bf 1-106,108-146
+connect-quickbooks-to-bigquery.md
+  a6524ca8fbfee9fc 1-120,122-160
+connect-linkedin-ads-to-bigquery.md
+  f19b9ccc437d185e 1-103,105-143
+connect-tiktok-ads-to-bigquery.md
+  f19b9ccc437d185e 1-113,115-153
+connect-facebook-ads-to-bigquery.md
+  1c3f590f1bf0e896 1-114,116-154
+connect-woocommerce-to-bigquery.md
+  a6524ca8fbfee9fc 1-112,114-152
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "a39ba77dbeeca273c5d3f09f8a2e5ea453fd05b8",
+  "prompts": {
+    "1c3f590f1bf0e896": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "cc65e815-3e03-4246-9c6b-f8be166954e5",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Daria Molochenko",
+      "messages": [],
+      "total_additions": 998,
+      "total_deletions": 251,
+      "accepted_lines": 241,
+      "overriden_lines": 9
+    },
+    "3fd9155a5c7347bf": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "4106057d-1e05-4f3a-96cd-ce185e686702",
+        "model": "claude-opus-5-thinking-medium"
+      },
+      "human_author": "Daria Molochenko",
+      "messages": [],
+      "total_additions": 602,
+      "total_deletions": 0,
+      "accepted_lines": 574,
+      "overriden_lines": 34
+    },
+    "a6524ca8fbfee9fc": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "bf237db9-2b53-415e-aec0-dc4b0219f51d",
+        "model": "claude-opus-5-thinking-medium"
+      },
+      "human_author": "Daria Molochenko",
+      "messages": [],
+      "total_additions": 649,
+      "total_deletions": 0,
+      "accepted_lines": 625,
+      "overriden_lines": 28
+    },
+    "e00d32674b178275": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "c012dd12-33e7-4a4b-a07d-ac42dd19e2c6",
+        "model": "claude-opus-5-thinking-medium"
+      },
+      "human_author": "Daria Molochenko",
+      "messages": [],
+      "total_additions": 593,
+      "total_deletions": 0,
+      "accepted_lines": 569,
+      "overriden_lines": 30
+    },
+    "f19b9ccc437d185e": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "57a05da2-f61d-4ab7-9a8c-589ba7408a6e",
+        "model": "claude-opus-5-thinking-medium"
+      },
+      "human_author": "Daria Molochenko",
+      "messages": [],
+      "total_additions": 581,
+      "total_deletions": 1,
+      "accepted_lines": 556,
+      "overriden_lines": 28
+    }
+  }
+}
