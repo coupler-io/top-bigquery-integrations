@@ -2,7 +2,7 @@
 
 Export data from marketing, sales, and finance apps to BigQuery with no code. Explore Coupler.io's top integrations: what data you can move, why teams do it, and how to set it up in minutes.
 
-Each page in this repo covers one source and answers the same three questions: how do I set the export up, what data can I actually get, and why would I bother. Everything is plain markdown, so the pages are equally readable on GitHub, in an editor, or by an AI assistant.
+Each page in this repo covers one source and answers the same three questions: how do I set the export up, what data can I actually get, and why would I bother.
 
 ## Where to find what
 
