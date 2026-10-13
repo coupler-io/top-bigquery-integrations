@@ -78,51 +78,113 @@ That is the entire manual part. If you are consolidating several companies into 
 
 ## What data can you export from QuickBooks to BigQuery with Coupler.io?
 
-This connector is report-oriented: rather than raw ledger objects, it returns the twenty-eight standard QuickBooks reports, which is usually closer to what finance actually asks for. One flow produces one report, so most teams run several in parallel. Coupler.io's built-in **Join** transformation can combine them before the load, so BigQuery receives one assembled table and nobody stitches reports together by hand — or load each report as its own table and model them in the warehouse.
+Coupler.io has two QuickBooks sources, and they answer different questions. **QuickBooks** pulls the underlying records: invoices, bills, customers, payments, and the rest of the accounting objects. **QuickBooks Reports** pulls the finished statements finance reads: the P&L, the balance sheet, aging, the general ledger. One flow loads one entity or one report, so most teams run several in parallel. Coupler.io's built-in **Join** transformation can combine them before the load, so BigQuery receives one assembled table. Or load each into its own table and model them in the warehouse.
 
-- **Account List Detail** — your chart of accounts with types, descriptions, balances, and currency. The reference table everything else joins back to.
-- **AP Aging Detail** — every unpaid supplier bill, line by line, with due dates and how far past due each one is. What you owe, and how late.
-- **AP Aging Summary** — the same obligation collapsed into aging buckets per supplier, for a quick read on payables pressure.
-- **AR Aging Detail** — outstanding customer invoices in full detail, which is the working list a credit controller chases from.
-- **AR Aging Summary** — receivables by customer and bucket, so the collections conversation starts with a number rather than an impression.
-- **Balance Sheet** — assets, liabilities, and equity as of a date. Keep it on a schedule and you get the monthly series rather than a single snapshot.
-- **Cash Flow** — where cash came from and where it went across the period, which is the report that survives contact with reality better than profit does.
-- **Customer Balance** — what each customer currently owes, in one line each.
-- **Customer Balance Detail** — the transactions behind those balances, so a disputed figure can be traced rather than argued about.
-- **Customer Income** — revenue by customer, the foundation for concentration risk analysis and account-level profitability.
-- **Expenses by Vendor** — spending grouped by supplier, which is where negotiating leverage and quiet subscription creep both show up.
-- **General Ledger Detail** — every posting against every account. Switched to a flat structure, this becomes the single most useful finance table you can put in a warehouse.
-- **Inventory Valuation Summary** — what your stock is worth and what it cost, reconcilable against the balance sheet line.
-- **Journal Report** — journal entries in debit and credit form, with the audit trail intact.
-- **Profit and Loss Summary** — income and expenses at account level for the period. The report most management packs are built around.
-- **Profit and Loss Detail** — the same, opened up to the transactions underneath, so an unexpected variance can be explained in one query rather than three clicks per line.
-- **Sales by Class Summary** — revenue split by class, which is how multi-brand and multi-programme businesses see their real mix.
-- **Sales by Customer** — who is buying and how much, over the period you choose.
-- **Sales by Department** — revenue by department or location, the basis for comparing sites and teams on equal terms.
-- **Sales by Product** — what sold and what it brought in, item by item.
-- **Tax Summary** — tax collected and owed, summarised for the period. The starting point for a filing check.
-- **Transaction List** — every transaction in the period in one flat list, which is the broadest net you can cast over a company's activity.
-- **Transaction List by Customer** — the same activity organised around the customer it belongs to.
-- **Transaction List by Vendor** — and the same again from the supplier side.
-- **Transaction List with Splits** — transactions broken out to their individual split lines, for when the summary total hides the detail that matters.
-- **Trial Balance** — debits and credits by account, the standard close checkpoint, and far more useful as a monthly series than as a single export.
-- **Vendor Balance** — what you currently owe each supplier.
-- **Vendor Balance Detail** — the underlying bills and payments behind each of those balances.
+### QuickBooks: 33 data entities
+
+**Sales and receivables**
+
+- **Invoice** — customer invoices with line items, amounts, due dates, and status.
+- **Estimate** — quotes sent to customers.
+- **SalesReceipt** — sales paid in full at the point of sale.
+- **CreditMemo** — credits issued to customers.
+- **RefundReceipt** — refunds paid out to customers.
+- **Payment** — customer payments and the invoices they settled.
+- **Deposit** — bank deposits and the payments they contain.
+- **Customer** — your customer list with contact details and balances.
+
+**Purchases and payables**
+
+- **Bill** — supplier bills awaiting or past payment.
+- **BillPayment** — payments made against bills.
+- **Purchase** — expenses, checks, and card purchases.
+- **PurchaseOrder** — orders placed with suppliers.
+- **VendorCredit** — credits received from suppliers.
+- **Vendor** — your supplier list with contact and payment details.
+
+**Accounting and banking**
+
+- **Account** — the chart of accounts with types and balances.
+- **JournalEntry** — manual postings in debit and credit form.
+- **JournalCode** — journal codes used to classify entries.
+- **Transfer** — transfers between your bank and credit accounts.
+- **Budget** — budgets by account and period.
+- **ExchangeRate** — currency exchange rates for multicurrency companies.
+
+**Products, people, and organization**
+
+- **Item** — products and services with prices and cost.
+- **Employee** — employee records.
+- **TimeActivity** — time entries logged against customers and projects.
+- **Class** — classes for tracking income and expenses by segment.
+- **Department** — departments or locations.
+
+**Tax and settings**
+
+- **TaxAgency** — the agencies you collect and pay tax to.
+- **TaxCode** — tax codes applied to transactions.
+- **TaxRate** — the rates behind those codes.
+- **Term** — payment terms such as Net 30.
+- **PaymentMethod** — payment methods such as cash, check, and card.
+- **CompanyInfo** — company profile details.
+- **Preferences** — company-level QuickBooks settings.
+- **Attachable** — metadata for files attached to transactions and other records.
+
+### QuickBooks Reports: 28 standard reports
+
+**Financial statements**
+
+- **Balance Sheet** — assets, liabilities, and equity as of a date.
+- **Cash Flow** — where cash came from and where it went in the period.
+- **Profit and Loss Summary** — income and expenses at account level.
+- **Profit and Loss Detail** — the same, down to the transactions.
+- **Trial Balance** — debits and credits by account.
+
+**Receivables**
+
+- **AR Aging Summary** — receivables by customer and aging bucket.
+- **AR Aging Detail** — every outstanding invoice with days past due.
+- **Customer Balance** — what each customer owes.
+- **Customer Balance Detail** — the transactions behind each balance.
+- **Customer Income** — revenue by customer.
+
+**Payables**
+
+- **AP Aging Summary** — payables by supplier and aging bucket.
+- **AP Aging Detail** — every unpaid bill with days past due.
+- **Vendor Balance** — what you owe each supplier.
+- **Vendor Balance Detail** — the bills and payments behind each balance.
+- **Expenses by Vendor** — spending grouped by supplier.
+
+**Ledger and transactions**
+
+- **General Ledger Detail** — every posting against every account.
+- **Journal Report** — journal entries in debit and credit form.
+- **Transaction List** — every transaction in the period.
+- **Transaction List by Customer** — transactions grouped by customer.
+- **Transaction List by Vendor** — transactions grouped by supplier.
+- **Transaction List with Splits** — transactions broken out into split lines.
+
+**Sales**
+
+- **Sales by Customer** — sales per customer.
+- **Sales by Product** — sales per product or service.
+- **Sales by Class Summary** — sales split by class.
+- **Sales by Department** — sales by department or location.
+
+**Reference and compliance**
+
+- **Account List Detail** — the chart of accounts with types and balances.
+- **Inventory Valuation Summary** — stock quantity and value.
+- **Tax Summary** — tax collected and owed for the period.
+
+Switch a report to the flat structure and each one becomes a one-row-per-record table that SQL can query. Run a report on a schedule with append mode and you build the history QuickBooks never kept.
 
 On the BigQuery side you name the dataset and table and choose the region a new dataset is created in, which matters when financial data residency is written into a policy. Coupler.io creates whatever does not exist yet and derives the table schema from the data itself.
 
 ## Why export QuickBooks to BigQuery — real life cases
 
-There are two honest ways to run this, and the right one depends on your team, not on which is more sophisticated.
-
-| | No-code route | Warehouse-led route |
-| --- | --- | --- |
-| **Who it's for** | Marketers, agency teams, finance — anyone without SQL, or with SQL but no spare analyst | Data teams who already own a modeling layer |
-| **Where logic lives** | In Coupler.io: join, append, aggregate, and column management before load | In BigQuery: dbt models, scheduled queries, views |
-| **BigQuery's job** | Storage and reporting — the tables arrive analysis-ready | Coordinator — it owns transformation and orchestration |
-| **What you get** | A working dashboard today, and no ticket in someone else's backlog | Full version control and reuse across every source |
-
-The cases below describe what teams actually do with the data. Both routes get you there; the no-code route just gets you there this afternoon.
+Here is what teams actually do with the data once it lands in BigQuery.
 
 - **Have your management reporting refresh itself**
 

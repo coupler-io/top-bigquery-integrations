@@ -5,7 +5,7 @@ canonical: https://github.com/coupler-io/top-bigquery-integrations/blob/main/con
 source: Xero
 destination: BigQuery
 meta_title: Connect Xero to BigQuery with Coupler.io
-meta_description: Load Xero invoices, bank transactions, journals, contacts, payroll, and project data into BigQuery on a schedule. Multi-organisation reporting without a single manual export.
+meta_description: Load Xero invoices, bank transactions, journals, contacts, payroll, project data, and financial reports like P&L and balance sheet into BigQuery on a schedule. Multi-organisation reporting without a single manual export.
 ---
 
 ![Xero](https://static.coupler.io/importers/xero.svg) → ![BigQuery](https://static.coupler.io/importers/google_big_query.svg)
@@ -85,7 +85,11 @@ That is the whole manual part. If you are combining several organisations into o
 
 ## What data can you export from Xero to BigQuery with Coupler.io?
 
-Fifty-seven data entities are available across four groups: accounting, payroll for the UK and New Zealand, payroll for Australia, and projects. One flow carries one entity, so most finance teams run several together — transactional tables at the centre, reference tables around them. Coupler.io's built-in **Join** transformation can assemble them before the load, so BigQuery receives one ready-to-query table rather than a set of fragments. Load them raw and model them in the warehouse instead, if that is how your data team prefers to work. If you want Xero's prepared financial statements rather than the underlying records, there is a separate Xero Reports connector for that.
+Coupler.io has two Xero sources, and they answer different questions. **Xero** pulls the underlying records: invoices, bank transactions, journals, contacts, payroll, and projects. **Xero Reports** pulls the prepared financial statements finance already reads: the P&L, the balance sheet, aged receivables and payables. One flow loads one entity or one report, so most finance teams run several together. Coupler.io's built-in **Join** transformation can assemble them before the load, so BigQuery receives one ready-to-query table rather than a set of fragments. Or load each raw and model it in the warehouse, if that is how your data team prefers to work.
+
+### Xero: 57 data entities
+
+Entities fall into four groups: accounting, payroll for the UK and New Zealand, payroll for Australia, and projects. Transactional tables sit at the centre, reference tables around them.
 
 - **Accounts** — your chart of accounts, with types, codes, and current balances. The lookup table almost everything else joins back to.
 - **Bank transactions** — money actually moving through your accounts, which is the reality check on anything the ledger claims.
@@ -120,20 +124,27 @@ Fifty-seven data entities are available across four groups: accounting, payroll 
 - **Payroll for the UK and New Zealand** — twelve entities covering Pay runs, Pay run calendars, Employees, Timesheets, Earning rates, Deductions, Benefits, Reimbursements, Leave types, Earnings orders, Accounts, and Tracking categories. Enough to analyse labour cost by period, team, and pay element without exporting a payslip.
 - **Payroll for Australia** — fifteen entities covering Pay runs, Payroll calendars, Employees, Timesheets and timesheet lines, Leave applications and their leave periods, Leave types, Earnings rates, Deduction types, Reimbursement types, Super funds, Settings, Accounts, and Tracking categories. The same analysis with the local specifics intact.
 
+### Xero Reports: 9 standard reports
+
+Use this source when you want the statements Xero already prepares, without rebuilding them from journals.
+
+- **Profit And Loss** — income and expenses for a period, with the option to compare several periods side by side and to slice by tracking category.
+- **Balance Sheet** — assets, liabilities, and equity as of a date, comparable across months, quarters, or years.
+- **Trial Balance** — debits and credits by account as of a date, the standard checkpoint at close.
+- **Executive Summary** — the headline figures for the business in one report: cash, profitability, income and expenses, and position.
+- **Budget Summary** — budgeted figures by period, ready to set against actuals from the P&L.
+- **Aged Receivables By Contact** — what a customer owes you, bucketed by how overdue it is. Set up one flow per contact you chase.
+- **Aged Payables By Contact** — what you owe a supplier, bucketed by age, for planning payment runs.
+- **Bank Summary** — opening and closing balances and movement for each bank account over a period.
+- **Bank Statement** — the transactions behind a single bank account, for reconciliation checks.
+
+Choose the Xero-style format when a person will read the report, with dates as column headers. Choose date-by-row format when SQL will read it: dates move into a single column, which is what makes trend tracking possible. Run a report on a schedule with append mode and you build the history Xero never kept.
+
 On the BigQuery side you name the dataset and table and pick the region a new dataset is created in, which matters when finance data residency is a policy and not a preference. Coupler.io creates whatever is missing and works out the table schema from the data itself.
 
 ## Why export Xero to BigQuery — real life cases
 
-There are two honest ways to run this, and the right one depends on your team, not on which is more sophisticated.
-
-| | No-code route | Warehouse-led route |
-| --- | --- | --- |
-| **Who it's for** | Marketers, agency teams, finance — anyone without SQL, or with SQL but no spare analyst | Data teams who already own a modeling layer |
-| **Where logic lives** | In Coupler.io: join, append, aggregate, and column management before load | In BigQuery: dbt models, scheduled queries, views |
-| **BigQuery's job** | Storage and reporting — the tables arrive analysis-ready | Coordinator — it owns transformation and orchestration |
-| **What you get** | A working dashboard today, and no ticket in someone else's backlog | Full version control and reuse across every source |
-
-The cases below describe what teams actually do with the data. Both routes get you there; the no-code route just gets you there this afternoon.
+Here is what teams actually do with the data once it lands in BigQuery.
 
 - **Have the finance dashboard update without anyone exporting anything**
 
