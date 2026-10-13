@@ -5,7 +5,7 @@ canonical: https://github.com/coupler-io/top-bigquery-integrations/blob/main/con
 source: Shopify
 destination: BigQuery
 meta_title: Connect Shopify to BigQuery with Coupler.io
-meta_description: Load Shopify orders, line items, customers, products, inventory, transactions, and refunds into BigQuery on a schedule. No apps to build, no API versions to chase.
+meta_description: Load raw Shopify data like orders, line items, customers, products, inventory, and refunds into BigQuery, or use pre-built sales and inventory reports, on a schedule. No apps to build, no API versions to chase.
 ---
 
 ![Shopify](https://static.coupler.io/importers/shopify.svg) → ![BigQuery](https://static.coupler.io/importers/google_big_query.svg)
@@ -80,6 +80,10 @@ That is the full manual portion. If several stores are being combined into one t
 
 ## What data can you export from Shopify to BigQuery with Coupler.io?
 
+Coupler.io gives you two ways to get Shopify data into BigQuery: **raw data entities**, which load the underlying records as they are, and **pre-built reports**, which load ready-made, analysis-ready tables for the questions ecommerce teams ask most. Use entities when you want full control and plan to model the data yourself. Use reports when you want the answer without building the logic.
+
+### Raw data entities
+
 Twelve data entities are available. A flow carries one entity, so most stores run several side by side — a transactional table at the centre, dimension tables around it. Coupler.io's built-in **Join** transformation can weld them together before the load, so BigQuery receives one query-ready table and nobody writes the join by hand. Or land each entity raw and model it in the warehouse instead, if that is how your stack works.
 
 - **Orders** — the spine of ecommerce reporting. One row per order with totals, discounts, taxes, shipping, currency, payment gateways, financial and fulfillment state, plus the customer attached to it. Most revenue dashboards start and end here.
@@ -95,20 +99,37 @@ Twelve data entities are available. A flow carries one entity, so most stores ru
 - **Orders with shipping lines** — the shipping methods chosen and what was charged for them, so delivery can be measured as a margin line rather than a rounding error.
 - **Order fulfillments with line items** — what left the warehouse, when, and which items were in each shipment. The basis for any serious operations or delivery-speed reporting.
 
+### Pre-built reports
+
+Coupler.io also ships ready-to-use Shopify reports. Each one is a pre-configured flow that pulls the right entities, calculates the metrics, and delivers a clean table to BigQuery, so there are no joins or formulas to write. Pick one, connect your store and BigQuery, and it runs on your schedule. The three GA4 reports combine Shopify with Google Analytics 4 for the full path from site visit to purchase.
+
+- **Shopify Returning customer rate** — how well the store holds on to the people who bought once. Customers, new customers, returning customers, and the returning rate by day, week, and month, so you can see whether loyalty efforts are working and where lifetime value is leaking.
+- **Shopify inventory monthly stockout forecast** — how many months of stock you have left. Available quantity is set against average sales pace, so stockouts show up months before they happen.
+- **Shopify inventory weekly stockout forecast** — the same forecast at weekly resolution. Current stock against weekly sales velocity, for replenishing on time, avoiding lost sales, and keeping levels sensible across the catalogue.
+- **Shopify inventory daily stockout forecast** — the fastest-moving version. Current stock against daily sales velocity, with days of stock remaining for every item, for catalogues where a few days is the difference between a sale and an apology.
+- **Shopify Sales by product variant** — which sizes, colours, and styles actually resonate. Quantity ordered and returned, returned quantity rate, net items sold, and gross, net, and total sales per variant across several timeframes, to steer inventory, pricing, and range.
+- **Shopify Sales by sources** — which channels bring the revenue and the customers. Orders, customers, items sold, gross, net, and total sales, average order value, and quantities ordered and returned by source, on a daily, weekly, and monthly view, so marketing budget follows what works.
+- **Shopify top customers** — your highest-value buyers, ranked. Orders, average order value, items, quantities ordered and returned, returned quantity rate, and gross, net, and total sales, plus returns, per customer. The base for loyalty programmes and personalised campaigns.
+- **Shopify sales by order fulfillment status** — sales split by where each order is in fulfillment. Items sold, gross, net, and total sales, returns, and average order value by status across daily, weekly, and monthly views, to spot processing delays and tighten warehouse operations.
+- **Shopify sales by order financial status** — sales split by payment state. Orders, customers, items sold, gross, net, and total sales, returns, taxes, and average order value by status, so pending and authorized payments stop hiding in the totals and cash flow is easier to manage.
+- **Shopify Sales by billing location** — where in the world the money comes from. Orders, customers, items sold, gross, net, and total sales, taxes, shipping charges, and average order value by billing country, with daily, weekly, and monthly trends to guide regional marketing and expansion.
+- **Shopify Total customers & Avg order value** — customer count and order value over time. Aggregated views alongside order-level detail, with orders, customers, items sold, gross, net, and total sales, taxes, and shipping charges.
+- **Shopify Top selling products** — what actually drives revenue. Net items sold, gross, net, and total sales, quantity ordered and returned, and returned quantity rate per product, with daily, weekly, and monthly trends to inform inventory and marketing.
+- **Shopify Sales by new vs returning customers** — the revenue split between first-time and repeat buyers. Orders, customers, items sold, and gross, net, and total sales per segment across daily, weekly, and monthly views, showing how acquisition and retention each contribute over time.
+- **Shopify Line Items with Shipping and Taxes** — the full picture of every line item in every order. Quantity, discount, gross sales, returns, net sales, taxes, shipping charged, and total sales.
+- **Shopify Total sales by line item** — the essentials about line items, from a single connection. Net items sold, gross sales, discounts, returns, net sales, taxes, and total sales.
+- **Shopify Total sales by order** — the state of the shop, order by order. Shipping, customer, and other details with net items sold, gross sales, discounts, returns, net sales, taxes, shipping charged, and total sales.
+- **Shopify Orders with COGS** — sales grouped by order and date, with cost of goods alongside. Net items sold, gross sales, discounts, returns, net sales, taxes, total sales, COGS, gross profit, and gross margin, for trends and revenue performance that account for profit.
+- **Shopify Line items with COGS** — profitability at line-item level. Net items sold, gross sales, discounts, net returns, net sales, taxes, total sales, COGS, gross profit, and gross margin, so you see which items earn their place.
+- **Shopify and GA4 monthly performance** — Shopify sales joined to Google Analytics 4 behaviour, month by month, to trace the journey from site visit to purchase. Sessions, users, cart additions, checkout starts and completions, added-to-cart rate, and product view, add-to-cart, and purchase user counts, next to orders, customers, items sold, and total sales. Best for long-term trends in experience and conversion.
+- **Shopify and GA4 weekly performance** — the same combination at weekly resolution, for mid-range trends in user experience and conversion.
+- **Shopify and GA4 daily performance** — the same combination day by day, connecting website engagement to actual sales outcomes so you can tune both experience and conversion.
+
 On the BigQuery side you give the dataset and table a name and pick the region a new dataset is created in, which matters when residency is a requirement rather than a preference. Coupler.io creates whatever does not exist yet and works out the table schema from the data itself.
 
 ## Why export Shopify to BigQuery — real life cases
 
-There are two honest ways to run this, and the right one depends on your team, not on which is more sophisticated.
-
-| | No-code route | Warehouse-led route |
-| --- | --- | --- |
-| **Who it's for** | Marketers, agency teams, finance — anyone without SQL, or with SQL but no spare analyst | Data teams who already own a modeling layer |
-| **Where logic lives** | In Coupler.io: join, append, aggregate, and column management before load | In BigQuery: dbt models, scheduled queries, views |
-| **BigQuery's job** | Storage and reporting — the tables arrive analysis-ready | Coordinator — it owns transformation and orchestration |
-| **What you get** | A working dashboard today, and no ticket in someone else's backlog | Full version control and reuse across every source |
-
-The cases below describe what teams actually do with the data. Both routes get you there; the no-code route just gets you there this afternoon.
+Here is what teams actually do with the data once it lands in BigQuery.
 
 - **Run your daily store reporting without touching an export button**
 
