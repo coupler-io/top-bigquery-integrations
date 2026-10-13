@@ -32,7 +32,6 @@ Authorize LinkedIn once, then work through four short source screens. No SQL, no
 ### Step 3. Dimensions
 
 - **Dimension** — the cut your demographics report is grouped by: country, region, industry, company size, job function, seniority, or association type. This is where you find out who your followers and visitors actually are.
-- **Breakdown dimension** — the equivalent control on the legacy time-based and lifetime report types, kept for flows built before the current reports existed.
 
 ### Step 4. Metrics
 
@@ -95,16 +94,7 @@ On the BigQuery side you name the dataset and table and pick the region a new da
 
 ## Why export LinkedIn Company Pages to BigQuery — real life cases
 
-There are two honest ways to run this, and the right one depends on your team, not on which is more sophisticated.
-
-| | No-code route | Warehouse-led route |
-| --- | --- | --- |
-| **Who it's for** | Marketers, agency teams, finance — anyone without SQL, or with SQL but no spare analyst | Data teams who already own a modeling layer |
-| **Where logic lives** | In Coupler.io: join, append, aggregate, and column management before load | In BigQuery: dbt models, scheduled queries, views |
-| **BigQuery's job** | Storage and reporting — the tables arrive analysis-ready | Coordinator — it owns transformation and orchestration |
-| **What you get** | A working dashboard today, and no ticket in someone else's backlog | Full version control and reuse across every source |
-
-The cases below describe what teams actually do with the data. Both routes get you there; the no-code route just gets you there this afternoon.
+Here is what teams actually do with the data once it lands in BigQuery.
 
 - **Put your LinkedIn page reporting on autopilot**
 
