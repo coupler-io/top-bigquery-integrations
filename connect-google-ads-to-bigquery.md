@@ -22,7 +22,7 @@ Connect your Google Ads account once and the wizard walks you through the rest. 
 
 - **Ad accounts** — tick each account whose data you want in this table. Select a dozen and Coupler.io stacks them into one labelled table, which is the difference between an agency roll-up taking a minute and taking a morning. Only the live accounts you actually have access to show up.
 - **Report type** — the decision that shapes the rest of the wizard. Choose the report or resource you want in BigQuery and the remaining fields adapt to it. Everything available is listed further down this page.
-- **Custom GAQL** — your escape hatch. Paste a Google Ads Query Language query and Coupler.io runs it as written, then loads the result into BigQuery for you. Handy when you need a field combination none of the packaged reports covers.
+- **Custom GAQL** — if none of the predefined reports above fits, use Custom GAQL. Paste a Google Ads Query Language query and Coupler.io runs it as written, then loads the result into BigQuery for you. Handy when you need a field combination none of the packaged reports covers.
 
 ### Step 2. Report period
 
@@ -103,16 +103,7 @@ On the BigQuery side you name the dataset and the table and choose the region a 
 
 ## Why export Google Ads to BigQuery — real life cases
 
-There are two honest ways to run this, and the right one depends on your team, not on which is more sophisticated.
-
-| | No-code route | Warehouse-led route |
-| --- | --- | --- |
-| **Who it's for** | Marketers, agency teams, finance — anyone without SQL, or with SQL but no spare analyst | Data teams who already own a modeling layer |
-| **Where logic lives** | In Coupler.io: join, append, aggregate, and column management before load | In BigQuery: dbt models, scheduled queries, views |
-| **BigQuery's job** | Storage and reporting — the tables arrive analysis-ready | Coordinator — it owns transformation and orchestration |
-| **What you get** | A working dashboard today, and no ticket in someone else's backlog | Full version control and reuse across every source |
-
-The cases below describe what teams actually do with the data. Both routes get you there; the no-code route just gets you there this afternoon.
+Here is what teams actually do with the data once it lands in BigQuery.
 
 - **Keep your Google Ads reporting running without touching it**
 

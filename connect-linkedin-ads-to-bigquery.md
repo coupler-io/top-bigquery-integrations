@@ -21,7 +21,7 @@ Sign in to LinkedIn once, then walk the wizard. Nothing here calls for SQL or a 
 ### Step 1. Basic settings
 
 - **Ad accounts** — select every account you want in this table. Coupler.io pulls several at once and keeps each row labelled, so a multi-client or multi-region roll-up is one flow instead of one per account.
-- **Report type** — the choice that reshapes the rest of the wizard. Pick the data category you want in BigQuery; all ten are described further down the page.
+- **Report type** — the choice that reshapes the rest of the wizard. Pick the data category you want in BigQuery; all eleven are described further down the page.
 
 ### Step 2. Report period
 
@@ -79,10 +79,11 @@ That is the entire manual part. Blending several sources into one table is the o
 
 ## What data can you export from LinkedIn Ads to BigQuery with Coupler.io?
 
-Ten data categories are available. A flow carries one category, so most teams run several in parallel: a performance fact table plus the structural and lead tables around it. Coupler.io's built-in **Join** transformation stitches them together before load, so BigQuery receives one query-ready table and nobody has to write the join — or load each category as its own raw table and model it in the warehouse instead.
+Eleven data categories are available. A flow carries one category, so most teams run several in parallel: a performance fact table plus the structural and lead tables around it. Coupler.io's built-in **Join** transformation stitches them together before load, so BigQuery receives one query-ready table and nobody has to write the join — or load each category as its own raw table and model it in the warehouse instead.
 
 - **Ad analytics by single dimension** — your core numbers grouped by one cut: campaign, creative, company, country, industry, seniority, job function, device, or placement. The table most LinkedIn dashboards are built on, and the one that answers who is actually seeing the ads.
 - **Ad analytics by multiple dimensions** — the same metrics with several cuts in the same rows, so campaign, objective, creative, and placement sit side by side instead of in four separate exports waiting to be reconciled.
+- **Campaign performance by member dimension** — campaign results broken down by who the members are: country, industry, company size, job function, seniority, and other member attributes. LinkedIn's API does not offer this cut out of the box; Coupler.io provides it as a dedicated report, so you can see which audiences each campaign actually reaches and converts.
 - **Sponsored leads** — every submission from your lead generation forms, with the answers people gave and the campaign that produced them. Drops straight into CRM matching, and finally separates campaigns that generate leads from campaigns that generate customers.
 - **Campaigns** — campaign setup as a reference table: objective, state, budget, schedule, and targeting approach. Gives every row of spend a name and an intent.
 - **Campaign groups** — the layer above campaigns, which is where most budgets are really governed and where reporting rolls up for clients and business units.
@@ -96,16 +97,7 @@ On the BigQuery side you name the dataset and table and choose the region a new 
 
 ## Why export LinkedIn Ads to BigQuery — real life cases
 
-There are two honest ways to run this, and the right one depends on your team, not on which is more sophisticated.
-
-| | No-code route | Warehouse-led route |
-| --- | --- | --- |
-| **Who it's for** | Marketers, agency teams, finance — anyone without SQL, or with SQL but no spare analyst | Data teams who already own a modeling layer |
-| **Where logic lives** | In Coupler.io: join, append, aggregate, and column management before load | In BigQuery: dbt models, scheduled queries, views |
-| **BigQuery's job** | Storage and reporting — the tables arrive analysis-ready | Coordinator — it owns transformation and orchestration |
-| **What you get** | A working dashboard today, and no ticket in someone else's backlog | Full version control and reuse across every source |
-
-The cases below describe what teams actually do with the data. Both routes get you there; the no-code route just gets you there this afternoon.
+Here is what teams actually do with the data once it lands in BigQuery.
 
 - **Put your LinkedIn Ads reporting on autopilot**
 

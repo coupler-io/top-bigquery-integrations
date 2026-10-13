@@ -27,8 +27,6 @@ It is a single wizard. Sign in to Facebook, choose the report you want, and say 
 
 - **Start date** — the opening of your window for the Page-level reports. Relative options such as *days ago*, *this month*, *last month*, *this year*, and *last year* follow the calendar on their own, so you set this once and leave it. For a longer fixed run-up, a macro like `{{365daysago}}` covers it.
 - **End date** — the closing of the window. Leave it relative and every run brings in the newest day available.
-- **Created after** — for post-level reports, the earliest creation date to include. The simplest way to isolate a campaign period or a single content sprint.
-- **Created before** — the other boundary of that creation window.
 - **Split data by period** — the grain of the Page reports. Day-level rows if a trend chart is anywhere in your future, or a coarser split when you only report monthly.
 
 ### Step 3. Metrics
@@ -101,16 +99,7 @@ On the BigQuery side you name the dataset and the table and choose the region a 
 
 ## Why export Facebook Page Insights to BigQuery — real life cases
 
-There are two honest ways to run this, and the right one depends on your team, not on which is more sophisticated.
-
-| | No-code route | Warehouse-led route |
-| --- | --- | --- |
-| **Who it's for** | Marketers, agency teams, finance — anyone without SQL, or with SQL but no spare analyst | Data teams who already own a modeling layer |
-| **Where logic lives** | In Coupler.io: join, append, aggregate, and column management before load | In BigQuery: dbt models, scheduled queries, views |
-| **BigQuery's job** | Storage and reporting — the tables arrive analysis-ready | Coordinator — it owns transformation and orchestration |
-| **What you get** | A working dashboard today, and no ticket in someone else's backlog | Full version control and reuse across every source |
-
-These are the things teams actually do with Page data once it is in the warehouse. Either route gets you there; the no-code one gets you there today.
+Here is what teams actually do with the data once it lands in BigQuery.
 
 - **Stop assembling the organic social report by hand**
 

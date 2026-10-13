@@ -104,16 +104,7 @@ On the BigQuery side you name the dataset and table and set the region a new dat
 
 ## Why export Instagram Insights to BigQuery — real life cases
 
-There are two honest ways to run this, and the right one depends on your team, not on which is more sophisticated.
-
-| | No-code route | Warehouse-led route |
-| --- | --- | --- |
-| **Who it's for** | Marketers, agency teams, finance — anyone without SQL, or with SQL but no spare analyst | Data teams who already own a modeling layer |
-| **Where logic lives** | In Coupler.io: join, append, aggregate, and column management before load | In BigQuery: dbt models, scheduled queries, views |
-| **BigQuery's job** | Storage and reporting — the tables arrive analysis-ready | Coordinator — it owns transformation and orchestration |
-| **What you get** | A working dashboard today, and no ticket in someone else's backlog | Full version control and reuse across every source |
-
-What follows is what social teams genuinely use this for. Both routes work; the no-code one is live this afternoon.
+Here is what teams actually do with the data once it lands in BigQuery.
 
 - **Have the monthly social report waiting for you**
 

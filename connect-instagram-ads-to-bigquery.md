@@ -90,16 +90,7 @@ On the BigQuery side you give the dataset and table a name and choose the region
 
 ## Why export Instagram Ads to BigQuery — real life cases
 
-There are two honest ways to run this, and the right one depends on your team, not on which is more sophisticated.
-
-| | No-code route | Warehouse-led route |
-| --- | --- | --- |
-| **Who it's for** | Marketers, agency teams, finance — anyone without SQL, or with SQL but no spare analyst | Data teams who already own a modeling layer |
-| **Where logic lives** | In Coupler.io: join, append, aggregate, and column management before load | In BigQuery: dbt models, scheduled queries, views |
-| **BigQuery's job** | Storage and reporting — the tables arrive analysis-ready | Coordinator — it owns transformation and orchestration |
-| **What you get** | A working dashboard today, and no ticket in someone else's backlog | Full version control and reuse across every source |
-
-Here is what teams actually do once the data is in place. Either route arrives at the same destination; the no-code one just arrives before the end of the day.
+Here is what teams actually do with the data once it lands in BigQuery.
 
 - **Keep the weekly Instagram Ads report updating by itself**
 

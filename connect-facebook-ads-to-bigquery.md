@@ -16,14 +16,12 @@ Meta's Ads Manager keeps roughly three years of history and locks it behind a UI
 
 ## How to export Facebook Ads data to BigQuery
 
-Sign in to Meta once, then walk the setup wizard. Nothing here needs SQL or a developer, and most flows are live in under five minutes. Here's every screen and what goes in it.
+Sign in to Meta once, then walk the setup wizard. The steps below cover Reports and Insights, Campaigns, Ad sets, Ads, Ads with ad creatives, and Activities. Nothing here needs SQL or a developer, and most flows are live in under five minutes. Here's every screen and what goes in it.
 
 ### Step 1. Basic settings
 
 - **Report type** — the one decision that shapes everything else. Pick the data category you want in BigQuery and the wizard adapts around it. All nine are listed further down the page.
 - **Ad accounts** — tick every account you want in this table. Pull several at once and Coupler.io stacks them together, labelled, so an agency roll-up is one flow instead of twelve.
-- **Businesses** — for invoices, choose which Business Manager accounts to bill from.
-- **Pages** — choose the Pages you want data for.
 
 ### Step 2. Report period
 
@@ -31,28 +29,25 @@ Sign in to Meta once, then walk the setup wizard. Nothing here needs SQL or a de
 - **End date** — where the window closes. Keep it relative — *today* — and every run stays current without anyone editing the flow.
 - **Split data by period** — how fine you want the time grain. Daily by default, which is what you want if you ever plan to chart a trend.
 
-### Step 3. Date filters
-
-- **Billing start date** — the first month of invoices to bring in. Leave it alone and you get the last six months.
-- **Billing end date** — the last month to include. Empty means right up to today.
-- **Issue start date** — prefer to work by the date Meta issued the invoice rather than the period it covers? Set this and it takes over.
-- **Issue end date** — the cut-off for issue dates.
-
-### Step 4. Metrics and dimensions
+### Step 3. Metrics and dimensions
 
 - **Metrics and dimensions** — build exactly the table you need. Start from the sensible defaults, add the conversion and cost metrics your team reports on, and skip the hundreds you don't.
 - **Breakdowns** — the "why" behind a number. Split performance by placement, device, age, or geography to see which slice is carrying the campaign.
 
-### Step 5. Advanced settings
+### Step 4. Advanced settings
 
 - **Attribution settings** — inherit your ad account's attribution so BigQuery matches Ads Manager, or override it when you need a consistent standard across accounts.
 - **Action attribution windows** — decide how long after a click or view a conversion still counts.
 - **Filters** — leave test campaigns and retired accounts out of the warehouse instead of cleaning them up later.
-- **Lead generation forms** — narrow to specific forms, or leave it empty to capture leads from all of them.
 - **Ad creative columns** — choose which creative attributes travel with your ads. Blank brings everything; core properties always come along.
 - **Updated since** — pull only what changed since a given date, so scheduled runs stay fast as the account grows.
 
-### Step 6. Blend and transform data
+> **Note:** Business invoices and Leads use different settings from the steps above.
+>
+> - **List of Business invoices** — in Step 1, pick the **Businesses** to bill from. Instead of the report period, set the invoice dates: **Billing start/end date** (defaults to the last six months) or **Issue start/end date**, which takes over when set.
+> - **List of Sponsored Leads** — in Step 1, pick the **Pages** you want leads for. In Advanced settings, optionally narrow to specific **Lead generation forms**; leave it empty to capture all of them.
+
+### Step 5. Blend and transform data
 
 - **Column management** — hide the fields nobody reads, rename cryptic API keys into labels a human understands, reorder them, and set the right data types.
 - **Join** — stitch Facebook Ads to another source on a shared key, so campaign spend and CRM outcomes arrive in one table.
@@ -60,15 +55,16 @@ Sign in to Meta once, then walk the setup wizard. Nothing here needs SQL or a de
 - **Aggregate** — roll daily rows up to the weekly or monthly grain your reporting model expects.
 - **Custom SQL** — for everything else. Write the query and Coupler.io loads the result.
 
-### Step 7. BigQuery destination
+### Step 6. BigQuery destination
 
+- **Connect to BigQuery** — upload your Google Cloud service account key (JSON file). [Here's how to get the key file](https://docs.coupler.io/sources/category/files-and-tables/google-big-query/how-to-get-google-cloud-key-file).
 - **Data location** — the region a new dataset gets created in. Leave it empty for US, or set it to keep data where your compliance team needs it. Pointing at a dataset that already exists? It stays in its original region regardless.
 - **Dataset name** — type an existing dataset or invent a new one; Coupler.io creates it for you.
 - **Table name** — same deal. Name the table and it appears on first run.
 
 Nothing else to fill in. Coupler.io defines the table schema from your data, so you don't map columns or pick types by hand.
 
-### Step 8. Schedule
+### Step 7. Schedule
 
 Pick a refresh interval — every 15 minutes at the fastest, or hourly, daily, weekly, monthly — and choose whether each run replaces the table or appends to it. From then on it runs itself. Meta's rate limits, async insights jobs, and retries are Coupler.io's problem, not yours: no Cloud Function to babysit, no 3 a.m. quota error.
 
@@ -83,8 +79,8 @@ It knows every field Facebook Ads exposes, so it picks the report type, selects 
 You only handle four things yourself:
 
 1. **Connect Facebook Ads** — signing in to Meta stays with you.
-2. **Connect BigQuery** — your Google Cloud access does too.
-3. **Pick the ad accounts** — you decide whose data is in scope.
+2. **Pick the ad accounts** — you decide whose data is in scope.
+3. **Connect BigQuery** — upload your Google Cloud service account key (JSON file). [Here's how to get the key file](https://docs.coupler.io/sources/category/files-and-tables/google-big-query/how-to-get-google-cloud-key-file).
 4. **Name the dataset and table** — you say where in your warehouse it lands.
 
 That's the whole manual part. If you're combining several sources into one table, you'll finish that bit in the wizard — everything else the Agent does for you.
@@ -107,16 +103,7 @@ On the BigQuery side you name the dataset and table and pick the region the data
 
 ## Why export Facebook Ads to BigQuery — real life cases
 
-There are two honest ways to run this, and the right one depends on your team, not on which is more sophisticated.
-
-| | No-code route | Warehouse-led route |
-| --- | --- | --- |
-| **Who it's for** | Marketers, agency teams, finance — anyone without SQL, or with SQL but no spare analyst | Data teams who already own a modeling layer |
-| **Where logic lives** | In Coupler.io: join, append, aggregate, and column management before load | In BigQuery: dbt models, scheduled queries, views |
-| **BigQuery's job** | Storage and reporting — the tables arrive analysis-ready | Coordinator — it owns transformation and orchestration |
-| **What you get** | A working dashboard today, and no ticket in someone else's backlog | Full version control and reuse across every source |
-
-The cases below describe what teams actually do with the data. Both routes get you there; the no-code route just gets you there this afternoon.
+Here is what teams actually do with Facebook Ads data once it lands in BigQuery.
 
 - **Put your Facebook Ads reporting on autopilot**
 
